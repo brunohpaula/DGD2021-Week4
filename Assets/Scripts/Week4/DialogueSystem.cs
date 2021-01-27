@@ -2,19 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+
+using UnityEngine.Networking;
 public class DialogueSystem : MonoBehaviour
 {
 
     private List<DialogueLine> allDialogueEvents;
- 
+
+    private string[] allLinesFromFile;
+    
 
     // Start is called before the first frame update
-    void Start()
-    {        
-        ReadExternalFile();
+    void Awake()
+    {
+
+
+        #if UNITY_WEBGL
+            StartCoroutine("ReadFileAsync");            
+        #else
+            ReadExternalFile();
+        #endif
     }
 
 
+    IEnumerator ReadFileAsync()
+    {
+        UnityWebRequest www = UnityWebRequest.Get(Application.dataPath + "/StreamingAssets/gametext.txt");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            // Show results as text
+            Debug.Log(www.downloadHandler.text);
+
+            allLinesFromFile = www.downloadHandler.text.Split("\n".ToCharArray());
+            // Or retrieve results as binary data            
+        }
+        ReadExternalFile();
+    }
+     
     public DialogueLine GetEvent(int id)
     {
         // more readable, simple loop
@@ -37,9 +67,12 @@ public class DialogueSystem : MonoBehaviour
     {
         allDialogueEvents = new List<DialogueLine>();
 
-        StreamReader r = new StreamReader(Application.dataPath + "/StreamingAssets/gametext.txt");
 
-        string[] allLinesFromFile = r.ReadToEnd().Split("\n".ToCharArray());
+
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            StreamReader r = new StreamReader(Application.dataPath + "/StreamingAssets/gametext.txt");
+            allLinesFromFile = r.ReadToEnd().Split("\n".ToCharArray());
+        #endif
 
         for (int i = 1; i < allLinesFromFile.Length; i++)
         {

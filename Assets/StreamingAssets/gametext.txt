@@ -1,4 +1,4 @@
 idevent	speaker	text	nextevent	LastEventInSequence	imageAsset	audioAsset
 0	Player	this is a nice day for a run!	1	N	PlayerDialogueImage	
 1	Player	Bye!	2	Y	PlayerDialogueImageMove	
-2	Player	"wow, that was hard!"	-1	Y	PlayerDialogueImageTired	
+2	Player	wow, that was hard!	-1	Y	PlayerDialogueImageTired	
