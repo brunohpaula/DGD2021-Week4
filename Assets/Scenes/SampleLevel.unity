@@ -5228,6 +5228,10 @@ PrefabInstance:
       propertyPath: allObstacles
       value: 
       objectReference: {fileID: 1466636505}
+    - target: {fileID: 294082505, guid: 2f94a193f538a9b499b129623398b779, type: 3}
+      propertyPath: filepath
+      value: /StreamingAssets/gametext.txt
+      objectReference: {fileID: 0}
     - target: {fileID: 6231843966695175496, guid: 2f94a193f538a9b499b129623398b779,
         type: 3}
       propertyPath: message1
@@ -5420,7 +5424,7 @@ PrefabInstance:
     - target: {fileID: 8659699061091924133, guid: 9e7f659e8f33aed48ad7fcc3962d8583,
         type: 3}
       propertyPath: playerVSpeed
-      value: 1.5
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 8659699061091924136, guid: 9e7f659e8f33aed48ad7fcc3962d8583,
         type: 3}
