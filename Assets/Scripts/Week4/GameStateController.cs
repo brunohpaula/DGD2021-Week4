@@ -15,7 +15,7 @@ public  class GameStateController : MonoBehaviour
     public static bool gameRunning;
 
     //points that the player has
-    public static int myPoints;
+    public static int score;
 
     //lives that the player has
     public static int lives;
@@ -38,11 +38,11 @@ public  class GameStateController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myPoints = 0;
+        score = 0;
 
-        lives = 4;
+        lives = 3;
 
-        levelDuration = 120;
+        levelDuration = 99999;
 
         dialogueSys = GetComponent<DialogueSystem>();
         ui = GetComponent<UIController>();
@@ -50,6 +50,12 @@ public  class GameStateController : MonoBehaviour
         isInEvent = false;
 
         gameRunning = true;
+
+        //updates the ui using the variable lives above (Check UIController if needed)
+        ui.RefreshLives();
+
+        //updates the score using the variable score above (Check UIController if needed)
+        ui.RefreshScore();
     }
 
     // Update is called once per frame
@@ -84,19 +90,21 @@ public  class GameStateController : MonoBehaviour
         }
     }
 
+    //stops gameplay and asks the UI component to display the game over message
     void GameOver()
     {
         Pause();
         ui.DisplayGameOver();
     }
 
-
+    //pauses gameplay using Time.timeScale (all Physics running at FixedUpdate are stopped)
     void Pause()
     {
         gameRunning = false;
         Time.timeScale = 0f;
     }
 
+    //restores gameplay
     void Unpause()
     {
         gameRunning = true;
@@ -104,33 +112,43 @@ public  class GameStateController : MonoBehaviour
         
     }
 
-
-
-
-
-
+    //This is usually called by a TriggerEvent
+    //Finds the right event and displays the static cutscene
     public void StartEvent(int eventID)
     {
+        //pauses gameplay
         Pause();
 
+        //this bool is used to control whether update should read and use clicks (see Update function above)
         isInEvent = true;
 
-        currentEvent = dialogueSys.GetEvent(eventID);
+        //Retrieves the correct "narrative event" (as a DialogueLine) using the eventid received from whoever called this function
+        //(usually the trigger)
+        currentEvent = dialogueSys.GetEvent(eventID);      
 
+        //passes the DialogueLine object to the ui so it can display the content (text, image, audio)
         ui.DisplayEvent(currentEvent);        
 
     }
 
+    //THis is usually called from Update
+    //when there is a click and "isInEvent" is true
     private void MoveToNextEvent()
-    {
+    {        
+        //if this is the last event in the sequence we need to get back to gameplay
         if (currentEvent.lastEventInSequence)
         {
+            //the game will be unpaused
             Unpause();
+            //the dialogue box will be hidden
             ui.HideDialogue();
+            //and the bool isInEvent will be set to false (as we are back to gameplay)
             isInEvent = false;
         }
+        //otherwise, we start the next "narrative event" in that sequence
         else
         {
+            //see function above
             StartEvent(currentEvent.nextEvent);
         }
     }
@@ -138,11 +156,18 @@ public  class GameStateController : MonoBehaviour
 
 
 
+    public void UpdateScore(int points)
+    {
+        score += points;
+        ui.RefreshScore();
+    }
 
 
-
-
-
+    public void UpdateLives(int difference)
+    {
+        lives += difference;
+        ui.RefreshLives();
+    }
 
 
     public void MakeInvincible()

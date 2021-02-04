@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1292316358967115083}
   - component: {fileID: 8930481056273059345}
   - component: {fileID: 1176226557395599350}
+  - component: {fileID: -8046301665867242903}
   m_Layer: 0
-  m_Name: MovementPowerUp
-  m_TagString: MovementModifier
+  m_Name: InvertMovementPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,3 +95,16 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &-8046301665867242903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972890100399180796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64def0dcb2eac14890c356b18cc2dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 5

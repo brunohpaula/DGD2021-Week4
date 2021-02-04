@@ -22,7 +22,7 @@ public class SimpleController : MonoBehaviour
 
     public bool isVerticalRunner;
 
-    public float playerSpeed;
+    public float playerVSpeed;
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
@@ -52,26 +52,31 @@ public class SimpleController : MonoBehaviour
 
         //bdp: similar to above, just that this is "up", "down" (or "W" and "S")
         float v = Input.GetAxis("Vertical");        
-        
-
+                
         if (invertMovement)
         {
             h = -h;
-            v = -v;
+            if (!isVerticalRunner)
+            {
+                v = -v;
+            }
+            
         }
 
         //bdp: make sure that we have a camera as the direction of the movement is calculated in relation to the camera (not the player)
         if (cam != null)
         {
             // calculate camera relative direction to move:
-            camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1)).normalized;
-            //move = (v * camForward + h * cam.right).normalized;
+            camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1)).normalized;            
             
             move = (v * camForward + h * cam.right).normalized;
             
             if (isVerticalRunner)
             {
-                move = (playerSpeed * camForward + h * cam.right).normalized;
+
+                //if this is a vertical runner we just normalise the horizontal movement
+                //and the forward movement is controlled by the variable playerSpeed
+                move = (h * cam.right).normalized + (playerVSpeed * camForward);
             }
             
         }
@@ -106,11 +111,7 @@ public class SimpleController : MonoBehaviour
         //bdp: Physics exercises you have done in school - that's what we're doing) to the player's rigidbody.
 
         //bdp: This force is multiplied by an arbitrary factor named m_MovePower
-        //bdp: m_MovePower can be used to "mess up" movement, create variations in movement speed, for example
-
-        //m_Rigidbody.AddForce(moveDirection * m_MovePower);                       
-
-        //m_Rigidbody.velocity = (moveDirection * m_MovePower);
+        //bdp: m_MovePower can be used to "mess up" movement, create variations in movement speed, for example        
 
         m_Rigidbody.AddForce(moveDirection * m_MovePower - m_Rigidbody.velocity);
     }
