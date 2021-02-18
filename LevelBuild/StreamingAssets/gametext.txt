@@ -1,0 +1,6 @@
+idevent	speaker	text	nextevent	LastEventInSequence	imageAsset	audioAsset
+0	Player	All right, time to run	1	N	PlayerDialogueImage	randomsound1
+1	Player	Bye!	2	Y	PlayerDialogueImageMove	randomsound2
+5	Player	enough of that!	999	N	PlayerDialogueImageTired	
+2	Player	wow, that was hard!	-1	Y	PlayerDialogueImageTired	randomsound3	
+999	Player	what a terrible lecture!	2	Y	PlayerDialogueImage	
